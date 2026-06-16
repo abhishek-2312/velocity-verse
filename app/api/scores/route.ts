@@ -1,4 +1,6 @@
 // app/api/scores/route.ts
+export const dynamic = 'force-dynamic'; // Tells Next.js to skip pre-rendering this at build time
+
 import { NextResponse } from 'next/server';
 import dbConnect from '../../../lib/dbConnect';
 import Score from '../../../models/Score';
