@@ -1,65 +1,61 @@
-import Image from "next/image";
+// app/page.tsx
+'use client';
+
+import React, { useState } from 'react';
+import GameCanvas from '@/components/GameCanvas';
+import LeaderboardPanel from '@/components/LeaderboardPanel';
 
 export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+  const [pilotName, setPilotName] = useState('');
+  const [isReady, setIsReady] = useState(false);
+
+  // Handle Pilot Login Gate
+  if (!isReady) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950 text-white font-mono p-4">
+        <div className="w-full max-w-sm p-6 bg-slate-900 border border-slate-800 rounded-xl text-center shadow-2xl">
+          <h1 className="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400 mb-2 uppercase">
+            VELOCITY MATRIX
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <p className="text-[10px] text-slate-500 mb-6 tracking-wider uppercase">ENTER PILOT CALLSIGN TO CONNECT</p>
+          
+          <input
+            type="text"
+            placeholder="PILOT_ID"
+            maxLength={12}
+            value={pilotName}
+            onChange={(e) => setPilotName(e.target.value.replace(/\s+/g, '_'))}
+            className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-center text-cyan-400 text-sm font-bold tracking-widest focus:outline-none focus:border-cyan-500 uppercase mb-4"
+          />
+
+          <button
+            disabled={!pilotName.trim()}
+            onClick={() => setIsReady(true)}
+            className="w-full bg-cyan-500 hover:bg-cyan-400 disabled:bg-slate-800 disabled:text-slate-600 text-slate-950 text-xs font-bold py-2.5 rounded tracking-widest uppercase transition"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            CONNECT LINK
+          </button>
         </div>
-      </main>
+      </div>
+    );
+  }
+
+  // Side-by-Side Live Flexbox Layout Deck
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950 p-6">
+      <div className="flex flex-col lg:flex-row items-start justify-center gap-6 w-full max-w-5xl">
+        
+        {/* Game Canvas Column */}
+        <div className="flex-1">
+          <GameCanvas username={pilotName.toUpperCase()} />
+        </div>
+
+        {/* Live Leaderboard Sidebar Column */}
+        <div className="w-full lg:w-auto shrink-0 lg:mt-8">
+          <LeaderboardPanel />
+        </div>
+
+      </div>
     </div>
   );
 }
