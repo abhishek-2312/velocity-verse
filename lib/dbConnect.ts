@@ -24,8 +24,10 @@ async function dbConnect() {
   
   try {
     cached.conn = await cached.promise;
+    console.log("🟩 Successfully connected to MongoDB Atlas Cluster.");
   } catch (e) {
     cached.promise = null;
+    console.error("❌ MongoDB Connection Handshake Failed! Details:", e);
     throw e;
   }
 

@@ -1,13 +1,9 @@
-// app/api/seed/route.ts
-export const dynamic = 'force-dynamic'; // Add this to unblock Vercel compilation!
+export const dynamic = 'force-dynamic';
 
-import { NextResponse } from "next/server";
-// ... the rest of your existing import and seed code continues below ...
-// app/api/seed/route.ts
 import { NextResponse } from 'next/server';
 import dbConnect from '../../../lib/dbConnect';
 import Level from '../../../models/Level';
-
+// ... the rest of your seed function logic continues below ...
 export async function GET() {
   try {
     await dbConnect();
