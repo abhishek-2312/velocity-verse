@@ -30,8 +30,24 @@ export async function POST(request: Request) {
 }
 
 // MUST be spelled exactly 'GET' and have 'export'
-export async function GET() {
+// MUST be spelled exactly 'GET' and have 'export'
+export async function GET(request: Request) {
   try {
+    // 🛡️ Check where the request is coming from
+    const originHost = request.headers.get('origin');
+    const referer = request.headers.get('referer');
+    const host = request.headers.get('host');
+
+    // If there is an origin, ensure it matches your own domain host
+    if (originHost && !originHost.includes(host || '')) {
+      return NextResponse.json({ success: false, error: "Access Denied: External scraping blocked." }, { status: 403 });
+    }
+
+    // If someone tries to open the link directly in a blank tab, referer is usually empty
+    if (!referer) {
+      return NextResponse.json({ success: false, error: "Access Denied: Direct browser links blocked." }, { status: 403 });
+    }
+
     await dbConnect();
     const scores = await Score.find({ endless: true }).sort({ score: -1 }).limit(5);
     return NextResponse.json({ success: true, data: scores });
